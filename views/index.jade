@@ -1,0 +1,72 @@
+extends layout
+
+block og
+    title=main.title
+    meta(name='description', content=main.description)
+
+    -if (modSet) {
+        - var m = parseInt(modSet);
+        - if (!mod[m-1] || isNaN(m)) m = 1;
+        meta(property='og:title', content=mod[m-1].og.title)
+        meta(property='og:description', content=mod[m-1].og.description)
+        meta(property='og:url', content=host + mod[m-1].url)
+    -} else {
+        meta(property='og:title', content=main.og.title)
+        meta(property='og:description', content=main.og.description)
+        meta(property='og:url', content=host)
+    -}
+
+block content
+    h1= title
+    p Welcome to #{title}
+
+    h3 Общестраничная шарилка
+    #main
+    dl
+        dt title
+        dd=main.title
+
+        dt description
+        dd=main.description
+
+        dt og:title
+        dd=main.og.title
+
+        dt og:description
+        dd=main.og.description
+
+    h3 Модификатор 1
+    #mod1
+    dt title
+        dd=mod[0].title
+
+        dt description
+        dd=mod[0].description
+
+        dt og:title
+        dd=mod[0].og.title
+
+        dt og:description
+        dd=mod[0].og.description
+
+    h3 Модификатор 2
+    #mod2
+    dt title
+        dd=mod[1].title
+
+        dt description
+        dd=mod[1].description
+
+        dt og:title
+        dd=mod[1].og.title
+
+        dt og:description
+        dd=mod[1].og.description
+
+    script.
+        var shares = {
+            main: !{JSON.stringify(main)},
+            mod: !{JSON.stringify(mod)}
+        }, host = '!{host}';
+
+    script(src="/javascripts/ya.js")
